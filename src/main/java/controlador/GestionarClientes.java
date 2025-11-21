@@ -2,14 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package logica;
+package controlador;
 
 import exception.CedulaUnicaException;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import logica.Cliente;
+import logica.Venta;
 import persistencia.Persistencia;
 
 /**
@@ -59,6 +60,14 @@ public class GestionarClientes {
     public Cliente registrarNuevoCliente(String nombre, String dni, String telefono, String direccion)
             throws CedulaUnicaException {
 
+        // Validaciones básicas
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del cliente no puede estar vacío.");
+        }
+        if (dni == null || dni.trim().isEmpty()) {
+            throw new IllegalArgumentException("La cédula/DNI del cliente no puede estar vacía.");
+        }
+
         // Regla de Negocio: La cédula/DNI debe ser única en el sistema 
         boolean dniExiste = clientes.stream()
                 .anyMatch(c -> c.getDni().equals(dni));
@@ -84,10 +93,13 @@ public class GestionarClientes {
      * Funcionalidad: Buscar cliente por ID, cédula o nombre.
      */
     public List<Cliente> buscarClientes(String criterio) {
+        if (criterio == null || criterio.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
         String criterioLower = criterio.toLowerCase();
         return clientes.stream()
                 .filter(c -> c.getNombre().toLowerCase().contains(criterioLower)
-                || c.getId().equals(criterio)
+                || c.getId().equalsIgnoreCase(criterio)
                 || c.getDni().equals(criterio))
                 .collect(Collectors.toList());
     }
@@ -96,6 +108,9 @@ public class GestionarClientes {
      * Funcionalidad: Buscar cliente específico por DNI.
      */
     public Cliente buscarClientePorDNI(String dni) {
+        if (dni == null || dni.trim().isEmpty()) {
+            return null;
+        }
         return clientes.stream()
                 .filter(c -> c.getDni().equals(dni))
                 .findFirst()
@@ -106,8 +121,11 @@ public class GestionarClientes {
      * Funcionalidad: Buscar cliente específico por ID.
      */
     public Cliente buscarClientePorID(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return null;
+        }
         return clientes.stream()
-                .filter(c -> c.getId().equals(id))
+                .filter(c -> c.getId().equalsIgnoreCase(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -125,9 +143,8 @@ public class GestionarClientes {
             if (nuevoTelefono != null && !nuevoTelefono.trim().isEmpty()) {
                 cliente.setTelefono(nuevoTelefono);
             }
-            if (nuevaDireccion != null && !nuevaDireccion.trim().isEmpty()) {
-                cliente.setDireccion(nuevaDireccion);
-            }
+            // La dirección puede ser vacía (es opcional)
+            cliente.setDireccion(nuevaDireccion);
 
             // Guardar cambios automáticamente
             persistencia.guardarClientes(clientes);
@@ -186,21 +203,6 @@ public class GestionarClientes {
     }
 
     /**
-     * Funcionalidad: Agregar puntos de fidelidad a un cliente. Los cambios se
-     * guardan automáticamente.
-     */
-    public void agregarPuntosCliente(String dni, int puntos) {
-        Cliente cliente = buscarClientePorDNI(dni);
-        if (cliente != null) {
-            cliente.acumularPuntos(puntos);
-
-            // Guardar cambios automáticamente
-            persistencia.guardarClientes(clientes);
-            System.out.println("✓ Puntos agregados al cliente: " + dni + " (+" + puntos + " puntos)");
-        }
-    }
-
-    /**
      * Funcionalidad: Canjear puntos de fidelidad de un cliente. Los cambios se
      * guardan automáticamente.
      *
@@ -221,12 +223,16 @@ public class GestionarClientes {
 
     /**
      * Funcionalidad: Registrar una compra en el historial del cliente. Los
-     * cambios se guardan automáticamente.
+     * cambios se guardan automáticamente. NOTA: Esta función también acumula
+     * puntos automáticamente.
      */
     public void registrarCompraCliente(String dni, Venta venta) {
         Cliente cliente = buscarClientePorDNI(dni);
         if (cliente != null) {
             cliente.agregarCompra(venta);
+            // Los puntos ya se acumulan en Venta.confirmarVenta()
+            // pero si necesitas hacerlo manualmente aquí, descomenta:
+            // cliente.acumularPuntos(venta.calcularSubtotal());
 
             // Guardar cambios automáticamente
             persistencia.guardarClientes(clientes);

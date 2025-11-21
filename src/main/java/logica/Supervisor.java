@@ -11,17 +11,28 @@ package logica;
 // Herencia de Empleado
 public class Supervisor extends Empleado {
 
+    private static final long serialVersionUID = 1L;
+
     public Supervisor(int idEmpleado, String nombre, String cedula) {
-        super(idEmpleado, nombre, cedula, "Supervisor"); // Rol 
+        super(idEmpleado, nombre, cedula, "Supervisor");
     }
 
     @Override
     public String tareaPrincipal() {
-        return "Autorizando descuentos especiales y ventas especiales.";
+        return "Autorizar descuentos especiales y supervisar ventas mayores.";
     }
 
-    // Autorizar descuento especial
+    /**
+     * Autoriza un descuento especial sobre una venta.
+     * Regla simple: solo se permiten descuentos de hasta el 30% (0.30).
+     */
     public boolean autorizarDescuentoEspecial(Venta venta, double porcentaje) {
+        if (venta == null) {
+            return false;
+        }
+        if (porcentaje < 0) {
+            return false;
+        }
         return porcentaje <= 0.30;
     }
 }

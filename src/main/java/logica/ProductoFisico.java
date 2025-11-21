@@ -21,17 +21,20 @@ public class ProductoFisico extends ProductoBase implements StockInventario, Ser
     private String ubicacion;
     private LocalDate fechaIngreso;
     private boolean enOferta;
-    private double descuentoPorcentaje;
+    private double descuentoPorcentaje; // Ej: 0.10 = 10%
 
-    public ProductoFisico(String nombre, double precio, String categoria, String codigoDeBarras, int stock, String ubicacion)
+    public ProductoFisico(String nombre, double precio, String categoria,
+                      String codigoDeBarras, int stock, String ubicacion)
             throws ProductoInvalidoException {
+
         super(nombre, precio, categoria);
-        // Validación específica 
-        // El precio debe ser mayor a 0
+
+        // El precio ya fue validado en ProductoBase (mín/máx), aquí solo reforzamos > 0
         if (precio <= 0) {
             throw new ProductoInvalidoException("El precio de un producto físico debe ser mayor a 0.");
         }
-        //El stock no puede ser negativo
+
+        // El stock no puede ser negativo
         if (stock < 0) {
             throw new IllegalArgumentException("El stock no puede ser negativo.");
         }
@@ -39,7 +42,7 @@ public class ProductoFisico extends ProductoBase implements StockInventario, Ser
         this.codigoDeBarras = codigoDeBarras;
         this.stockEnTienda = stock;
         this.ubicacion = ubicacion;
-        this.fechaIngreso = LocalDate.now(); // LocalDate.now() obtine la fecha actual del sistema (año, mes, día)
+        this.fechaIngreso = LocalDate.now();
         this.enOferta = false;
         this.descuentoPorcentaje = 0.0;
     }
@@ -47,23 +50,29 @@ public class ProductoFisico extends ProductoBase implements StockInventario, Ser
     // Implementación de método abstracto de ProductoBase 
     @Override
     public double calcularPrecioConDescuento() {
-        //Los productos pueden estar en oferta (descuento porcentual)
+        // Los productos pueden estar en oferta (descuento porcentual)
         if (enOferta && descuentoPorcentaje > 0) {
             return this.precio * (1 - descuentoPorcentaje);
         }
         return this.precio;
     }
 
-    // Implementación de la clase interz StockInventario
-    //gestionar el inventario en tienda
+    // Implementación de la interfaz StockInventario
     @Override
     public void agregarStock(int cantidad) {
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a agregar no puede ser negativa.");
+        }
         this.stockEnTienda += cantidad;
     }
 
     @Override
     public void reducirStock(int cantidad) {
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a reducir no puede ser negativa.");
+        }
         if (this.stockEnTienda - cantidad < 0) {
+            throw new IllegalArgumentException("No hay suficiente stock para reducir esa cantidad.");
         }
         this.stockEnTienda -= cantidad;
     }
@@ -83,13 +92,40 @@ public class ProductoFisico extends ProductoBase implements StockInventario, Ser
         return codigoDeBarras;
     }
 
-    //Setters
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public LocalDate getFechaIngreso() {
+        return fechaIngreso;
+    }
+
+    public boolean isEnOferta() {
+        return enOferta;
+    }
+
+    public double getDescuentoPorcentaje() {
+        return descuentoPorcentaje;
+    }
+
+    // Setters
     public void setEnOferta(boolean enOferta, double descuento) {
+        // descuento esperado entre 0 y 1 (0.10 = 10%)
+        if (descuento < 0 || descuento > 1) {
+            throw new IllegalArgumentException("El descuento debe estar entre 0 y 1 (por ejemplo 0.10 = 10%).");
+        }
         this.enOferta = enOferta;
         this.descuentoPorcentaje = descuento;
     }
 
+    public void setDescuentoPorcentaje(double descuentoPorcentaje) {
+        this.descuentoPorcentaje = descuentoPorcentaje;
+    }
+
     public void setStockEnTienda(int stockEnTienda) {
+        if (stockEnTienda < 0) {
+            throw new IllegalArgumentException("El stock no puede ser negativo.");
+        }
         this.stockEnTienda = stockEnTienda;
     }
 

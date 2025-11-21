@@ -15,21 +15,34 @@ import java.io.Serializable;
 public class DetalleVenta implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     private int idVenta;
     private ProductoBase producto; // Agregación con ProductoBase
     private int cantidad;
 
     public DetalleVenta(int idVenta, ProductoBase producto, int cantidad) {
+        if (producto == null) {
+            throw new IllegalArgumentException("El producto no puede ser nulo.");
+        }
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
+        }
+
         this.idVenta = idVenta;
         this.producto = producto;
         this.cantidad = cantidad;
     }
 
+    // Calcula el subtotal de este ítem (precio con descuento * cantidad)
     public double getSubtotalItem() {
         return producto.calcularPrecioConDescuento() * cantidad;
     }
 
     // Getters
+    public int getIdVenta() {
+        return idVenta;
+    }
+
     public ProductoBase getProducto() {
         return producto;
     }
@@ -38,9 +51,11 @@ public class DetalleVenta implements Serializable {
         return cantidad;
     }
 
-    //Setters
+    // Setters
     public void setCantidad(int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
+        }
         this.cantidad = cantidad;
     }
-
 }

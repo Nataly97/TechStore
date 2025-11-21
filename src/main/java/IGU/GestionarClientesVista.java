@@ -4,17 +4,33 @@
  */
 package IGU;
 
+import controlador.GestionarClientes;
+import logica.*;
+import javax.swing.JOptionPane;
+import java.util.List;
+
 /**
  *
  * @author Nataly
  */
 public class GestionarClientesVista extends javax.swing.JFrame {
 
+    private GestionarClientes gestionClientes;
+
     /**
      * Creates new form GestionarCliente
      */
-    public GestionarClientesVista() {
+    public GestionarClientesVista(GestionarClientes gestionClientes) {
+        this.gestionClientes = gestionClientes;
         initComponents();
+        configurarVentana();
+    }
+
+    private void configurarVentana() {
+        this.setTitle("TechStore - Gestión de Clientes");
+        this.setLocationRelativeTo(null); // Centrar en pantalla
+        this.setResizable(false);
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -28,97 +44,131 @@ public class GestionarClientesVista extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnBuscarCliente = new javax.swing.JButton();
+        btnNuevoCliente = new javax.swing.JButton();
+        btnActualizarCliente = new javax.swing.JButton();
+        btnPerfilCliente = new javax.swing.JButton();
+        btnAtras = new javax.swing.JButton();
+        btnCanjearPuntos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204), 2));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 153), 2, true));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel1.setFont(new java.awt.Font("MS PGothic", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 51, 153));
         jLabel1.setText("Gestión de Clientes");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 204));
-        jButton1.setText("Buscar Cliente");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarCliente.setBackground(new java.awt.Color(204, 204, 255));
+        btnBuscarCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnBuscarCliente.setText("Buscar Cliente");
+        btnBuscarCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnBuscarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarClienteActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 204));
-        jButton2.setText("Nuevo Cliente");
-        jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnNuevoCliente.setBackground(new java.awt.Color(204, 255, 204));
+        btnNuevoCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnNuevoCliente.setText("Nuevo Cliente");
+        btnNuevoCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnNuevoClienteActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(0, 0, 204));
-        jButton3.setText("Actualizar Cliente");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizarCliente.setBackground(new java.awt.Color(204, 255, 204));
+        btnActualizarCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnActualizarCliente.setText("Actualizar Cliente");
+        btnActualizarCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnActualizarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnActualizarClienteActionPerformed(evt);
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 0, 204));
-        jButton4.setText("Perfil Cliente");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnPerfilCliente.setBackground(new java.awt.Color(204, 204, 255));
+        btnPerfilCliente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnPerfilCliente.setText("Perfil Cliente");
+        btnPerfilCliente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnPerfilCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnPerfilClienteActionPerformed(evt);
             }
         });
+
+        btnAtras.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAtras.setForeground(new java.awt.Color(102, 102, 102));
+        btnAtras.setLabel("Atrás");
+        btnAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasActionPerformed(evt);
+            }
+        });
+
+        btnCanjearPuntos.setBackground(new java.awt.Color(204, 255, 204));
+        btnCanjearPuntos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCanjearPuntos.setText("Canjear Puntos");
+        btnCanjearPuntos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 38, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(37, 37, 37))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(21, 21, 21)))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3))
+                        .addGap(43, 43, 43)
+                        .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnActualizarCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(btnPerfilCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(108, 108, 108)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
-                        .addComponent(jButton4)))
-                .addContainerGap(34, Short.MAX_VALUE))
+                        .addGap(127, 127, 127)
+                        .addComponent(btnCanjearPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(52, 52, 52)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                    .addComponent(btnActualizarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPerfilCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCanjearPuntos, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(btnAtras, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,31 +178,285 @@ public class GestionarClientesVista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            DialogoNuevoCliente dialogo = new DialogoNuevoCliente(this, true, gestionClientes);
+            dialogo.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir el formulario de nuevo cliente:\n" + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnNuevoClienteActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnBuscarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        String criterio = JOptionPane.showInputDialog(this,
+                "Ingrese la cédula o nombre del cliente:",
+                "Buscar Cliente",
+                JOptionPane.QUESTION_MESSAGE);
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        if (criterio != null && !criterio.trim().isEmpty()) {
+            try {
+                // Intentar buscar por cédula primero
+                Cliente cliente = gestionClientes.buscarClientePorDNI(criterio.trim());
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+                if (cliente != null) {
+                    mostrarInformacionCliente(cliente);
+                } else {
+                    // Si no se encuentra por cédula, buscar por nombre
+                    List<Cliente> clientes = gestionClientes.buscarClientes(criterio.trim());
+
+                    if (clientes.isEmpty()) {
+                        JOptionPane.showMessageDialog(this,
+                                "No se encontró ningún cliente con ese criterio.",
+                                "Cliente no encontrado",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else if (clientes.size() == 1) {
+                        mostrarInformacionCliente(clientes.get(0));
+                    } else {
+                        // Mostrar lista de clientes encontrados
+                        String[] opciones = new String[clientes.size()];
+                        for (int i = 0; i < clientes.size(); i++) {
+                            opciones[i] = clientes.get(i).getNombre() + " - " + clientes.get(i).getCedula();
+                        }
+
+                        String seleccion = (String) JOptionPane.showInputDialog(this,
+                                "Se encontraron varios clientes. Seleccione uno:",
+                                "Seleccionar Cliente",
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                opciones,
+                                opciones[0]);
+
+                        if (seleccion != null) {
+                            int indice = java.util.Arrays.asList(opciones).indexOf(seleccion);
+                            mostrarInformacionCliente(clientes.get(indice));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error al buscar cliente:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnBuscarClienteActionPerformed
+
+    private void btnActualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+        String cedula = JOptionPane.showInputDialog(this,
+                "Ingrese la cédula del cliente a actualizar:",
+                "Actualizar Cliente",
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (cedula != null && !cedula.trim().isEmpty()) {
+            try {
+                Cliente cliente = gestionClientes.buscarClientePorDNI(cedula.trim());
+
+                if (cliente == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "No se encontró ningún cliente con esa cédula.",
+                            "Cliente no encontrado",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // Solicitar nuevos datos
+                String nuevoTelefono = JOptionPane.showInputDialog(this,
+                        "Teléfono actual: " + cliente.getTelefono() + "\nNuevo teléfono (dejar vacío para no cambiar):",
+                        "Actualizar Teléfono",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                String nuevaDireccion = JOptionPane.showInputDialog(this,
+                        "Dirección actual: " + cliente.getDireccion() + "\nNueva dirección (dejar vacío para no cambiar):",
+                        "Actualizar Dirección",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                // Actualizar solo si se ingresaron nuevos valores
+                if (nuevoTelefono != null && !nuevoTelefono.trim().isEmpty()) {
+                    cliente.setTelefono(nuevoTelefono.trim());
+                }
+                if (nuevaDireccion != null && !nuevaDireccion.trim().isEmpty()) {
+                    cliente.setDireccion(nuevaDireccion.trim());
+                }
+
+                gestionClientes.guardarTodos();
+
+                JOptionPane.showMessageDialog(this,
+                        "Cliente actualizado correctamente.",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error al actualizar cliente:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnActualizarClienteActionPerformed
+
+    private void btnPerfilClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilClienteActionPerformed
+        // TODO add your handling code here:
+        String cedula = JOptionPane.showInputDialog(this,
+                "Ingrese la cédula del cliente:",
+                "Ver Perfil",
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (cedula != null && !cedula.trim().isEmpty()) {
+            try {
+                Cliente cliente = gestionClientes.buscarClientePorDNI(cedula.trim());
+
+                if (cliente == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "No se encontró ningún cliente con esa cédula.",
+                            "Cliente no encontrado",
+                            JOptionPane.WARNING_MESSAGE);
+                } else {
+                    mostrarPerfilCompleto(cliente);
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error al buscar cliente:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnPerfilClienteActionPerformed
+
+    private void btnCanjearPuntosActionPerformed(java.awt.event.ActionEvent evt) {
+        // Canjear puntos de fidelidad
+        String cedula = JOptionPane.showInputDialog(this,
+                "Ingrese la cédula del cliente:",
+                "Canjear Puntos",
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (cedula != null && !cedula.trim().isEmpty()) {
+            try {
+                Cliente cliente = gestionClientes.buscarClientePorDNI(cedula.trim());
+
+                if (cliente == null) {
+                    JOptionPane.showMessageDialog(this,
+                            "No se encontró ningún cliente con esa cédula.",
+                            "Cliente no encontrado",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                int puntosActuales = cliente.getPuntosFidelidad();
+
+                if (puntosActuales < 100) {
+                    JOptionPane.showMessageDialog(this,
+                            "El cliente no tiene suficientes puntos para canjear.\n"
+                            + "Puntos actuales: " + puntosActuales + "\n"
+                            + "Mínimo requerido: 100 puntos",
+                            "Puntos Insuficientes",
+                            JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                String puntosStr = JOptionPane.showInputDialog(this,
+                        "Puntos disponibles: " + puntosActuales + "\n"
+                        + "Ingrese la cantidad de puntos a canjear (múltiplo de 100):",
+                        "Canjear Puntos",
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (puntosStr != null && !puntosStr.trim().isEmpty()) {
+                    int puntos = Integer.parseInt(puntosStr.trim());
+
+                    double descuento = cliente.canjearPuntos(puntos);
+                    gestionClientes.guardarTodos();
+
+                    JOptionPane.showMessageDialog(this,
+                            "Puntos canjeados exitosamente.\n\n"
+                            + "Puntos canjeados: " + puntos + "\n"
+                            + "Descuento obtenido: $" + String.format("%.2f", descuento) + "\n"
+                            + "Puntos restantes: " + cliente.getPuntosFidelidad(),
+                            "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Por favor ingrese un número válido.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this,
+                        e.getMessage(),
+                        "Error",
+                        JOptionPane.WARNING_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this,
+                        "Error al canjear puntos:\n" + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnAtrasActionPerformed
+
+    private void mostrarInformacionCliente(Cliente cliente) {
+        String info = "=== INFORMACIÓN DEL CLIENTE ===\n\n"
+                + "ID: " + cliente.getId() + "\n"
+                + "Nombre: " + cliente.getNombre() + "\n"
+                + "Cédula: " + cliente.getCedula() + "\n"
+                + "Teléfono: " + cliente.getTelefono() + "\n"
+                + "Dirección: " + cliente.getDireccion() + "\n"
+                + "Puntos de Fidelidad: " + cliente.getPuntosFidelidad();
+
+        JOptionPane.showMessageDialog(this,
+                info,
+                "Información del Cliente",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void mostrarPerfilCompleto(Cliente cliente) {
+        StringBuilder perfil = new StringBuilder();
+        perfil.append("====\n");
+        perfil.append("    PERFIL COMPLETO DEL CLIENTE\n");
+        perfil.append("====\n\n");
+        perfil.append("ID: ").append(cliente.getId()).append("\n");
+        perfil.append("Nombre: ").append(cliente.getNombre()).append("\n");
+        perfil.append("Cédula: ").append(cliente.getCedula()).append("\n");
+        perfil.append("Teléfono: ").append(cliente.getTelefono()).append("\n");
+        perfil.append("Dirección: ").append(cliente.getDireccion()).append("\n");
+        perfil.append("Puntos de Fidelidad: ").append(cliente.getPuntosFidelidad()).append("\n");
+        perfil.append("Total de Compras: ").append(cliente.getHistorialCompras().size()).append("\n");
+        perfil.append("\n====\n");
+
+        if (!cliente.getHistorialCompras().isEmpty()) {
+            perfil.append("HISTORIAL DE COMPRAS:\n");
+            perfil.append("====\n");
+            for (Venta venta : cliente.getHistorialCompras()) {
+                perfil.append("• Factura: ").append(venta.getNumeroFactura()).append("\n");
+                perfil.append("  Total: $").append(String.format("%.2f", venta.calcularTotal())).append("\n");
+                perfil.append("  Estado: ").append(venta.getEstado()).append("\n\n");
+            }
+        } else {
+            perfil.append("\nNo hay compras registradas.\n");
+        }
+        perfil.append("====\n");
+
+        JOptionPane.showMessageDialog(this,
+                perfil.toString(),
+                "Perfil del Cliente",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -169,28 +473,21 @@ public class GestionarClientesVista extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GestionarClientesVista.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GestionarClientesVista().setVisible(true);
+                new GestionarClientesVista(new GestionarClientes()).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnActualizarCliente;
+    private javax.swing.JButton btnAtras;
+    private javax.swing.JButton btnBuscarCliente;
+    private javax.swing.JButton btnCanjearPuntos;
+    private javax.swing.JButton btnNuevoCliente;
+    private javax.swing.JButton btnPerfilCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

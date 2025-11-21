@@ -3,10 +3,7 @@
  */
 package com.mycompany.techstore;
 
-import IGU.*;
-import logica.*;
-import javax.swing.*;
-import persistencia.Persistencia;
+import IGU.MenuPrincipalApp;
 
 /**
  *
@@ -15,61 +12,30 @@ import persistencia.Persistencia;
 public class TechStore {
 
     public static void main(String[] args) {
-        System.out.println("╔════════════════════════════════════╗");
-        System.out.println("║   TECHSTORE - Sistema de Gestión   ║");
-        System.out.println("║   Tienda de Productos Tecnológicos ║");
-        System.out.println("╚════════════════════════════════════╝\n");
-
-        // Inicializar sistema de persistencia
-        Persistencia persistencia = new Persistencia();
-        persistencia.verificarSistema();
-
-        // Configurar Look and Feel
+        // Opcional: configurar el look and feel de Swing
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //Bloque try con UIManager:
+            //Intenta aplicar el tema “Nimbus” para que tu interfaz se vea más moderna. Si falla, usa el tema por defecto.
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
         } catch (Exception e) {
-            System.err.println("No se pudo establecer el Look and Feel");
+            // Si falla Nimbus, sigue con el look and feel por defecto
+            e.printStackTrace();
         }
 
-        // Iniciar interfaz gráfica
-        java.awt.EventQueue.invokeLater(() -> {
-            mostrarMenuPrincipal();
+        // Iniciar la aplicación en el hilo de eventos de Swing
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // Aquí asumimos que tienes un JFrame llamado MenuPrincipalApp
+                MenuPrincipalApp menu = new MenuPrincipalApp();
+                menu.setLocationRelativeTo(null); // centrar la ventana
+                menu.setVisible(true);
+            }
         });
-    }
-
-    private static void mostrarMenuPrincipal() {
-        String[] opciones = {
-            "Gestión de Clientes",
-            "Gestión de Inventario",
-            "Realizar Venta",
-            "Salir"
-        };
-
-        int seleccion = JOptionPane.showOptionDialog(
-                null,
-                "Seleccione el módulo a abrir:",
-                "TechStore - Menú Principal",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                opciones,
-                opciones[0]
-        );
-
-        switch (seleccion) {
-            case 0:
-                new GestionarClienteIgu().setVisible(true);
-                break;
-            case 1:
-                new IGU.GestionInventario().setVisible(true);
-                break;
-            case 2:
-                new IGU.PanelVentas().setVisible(true);
-                break;
-            case 3:
-            default:
-                System.exit(0);
-                break;
-        }
     }
 }

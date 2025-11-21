@@ -18,9 +18,18 @@ public class ServicioDigital extends ProductoBase implements Serializable {
     private int duracionEstimadaMinutos;
     private String descripcion;
 
-    public ServicioDigital(String nombre, double precio, String categoria, int duracion, String descripcion)
-            throws ProductoInvalidoException {
+    public ServicioDigital(String nombre, double precio, String categoria,
+            int duracion, String descripcion) throws ProductoInvalidoException {
         super(nombre, precio, categoria);
+
+        if (duracion <= 0) {
+            throw new IllegalArgumentException("La duración estimada debe ser mayor a 0 minutos.");
+        }
+
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            throw new IllegalArgumentException("La descripción del servicio no puede estar vacía.");
+        }
+
         this.duracionEstimadaMinutos = duracion;
         this.descripcion = descripcion;
     }
@@ -35,5 +44,9 @@ public class ServicioDigital extends ProductoBase implements Serializable {
     // Getters
     public int getDuracionEstimadaMinutos() {
         return duracionEstimadaMinutos;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
     }
 }
